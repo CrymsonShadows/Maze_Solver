@@ -20,12 +20,13 @@ class Maze:
         self._create_cells()
         self._break_entrance_and_exit()
         self._break_walls_r(0, 0)
+        self._reset_cells_visited()
 
 
     def _create_cells(self):
-        for i in range(self._num_cols):
+        for _ in range(self._num_cols):
             maze_col = []
-            for j in range(self._num_rows):
+            for _ in range(self._num_rows):
                 maze_col.append(Cell(self._win))
             self._cells.append(maze_col)
         for col in range(len(self._cells)):
@@ -67,7 +68,7 @@ class Maze:
                 to_visit.append((col, row + 1))
             
             if len(to_visit) == 0:
-                self._draw_cell(col, row)
+                self._draw_cell(i=row, j=col)
                 return
             chosen_destination = random.randrange(0, len(to_visit))
             visit = to_visit.pop(chosen_destination)
@@ -84,4 +85,9 @@ class Maze:
                 self._cells[col][row].has_bottom_wall = False
                 self._cells[col][row + 1].has_top_wall = False
             self._break_walls_r(visit[0], visit[1])
+    
+    def _reset_cells_visited(self):
+        for col in range(self._num_cols):
+            for row in range(self._num_rows):
+                self._cells[col][row].visited = False
             
